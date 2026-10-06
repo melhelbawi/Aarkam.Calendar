@@ -4,7 +4,7 @@
 
 **A modern, dependency-free calendar component built for Saudi, Arabic, government, enterprise, education, financial, and offline applications.**
 
-[![Version](https://img.shields.io/badge/version-1.7.2-156643.svg)](https://github.com/melhelbawi/Aarkam.Calendar)
+[![Version](https://img.shields.io/badge/version-1.0.0-156643.svg)](https://github.com/melhelbawi/Aarkam.Calendar)
 [![Vue 2](https://img.shields.io/badge/Vue-2.x-42b883.svg)](https://v2.vuejs.org/)
 [![Vue 3](https://img.shields.io/badge/Vue-3.x-42b883.svg)](https://vuejs.org/)
 [![Dependencies](https://img.shields.io/badge/runtime_dependencies-zero-success.svg)](https://github.com/melhelbawi/Aarkam.Calendar)
