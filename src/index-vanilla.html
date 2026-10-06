@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Aarkam Calendar Vue 2 v1.0.0</title>
+    <title>Aarkam Calendar (Vanilla JS)</title>
+
     <!-- Google Fonts for crisp Arabic typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,57 +17,41 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
     />
-    <!-- Vue 2.7 Runtime (unpkg CDN to avoid storage warnings) -->
-    <script src="https://unpkg.com/vue@2.7.16/dist/vue.js"></script>
 
-    <!-- Clean Vue 2 Script -->
-    <script src="Aarkam.Calendar.vue2.v1.0.0.js"></script>
-    <link rel="stylesheet" href="../Aarkam.Calendar.css" />
+    <!-- Pure Vanilla JS Script (Zero Vue) -->
+    <script src="Aarkam.Calendar.js"></script>
+    <link rel="stylesheet" href="Aarkam.Calendar.css" />
   </head>
 
   <body>
-   <body>
-    <div id="app" class="container">
+    <div class="container">
       <header class="page-header">
         <div class="page-title">
           <h1>تقويم أرقام — Aarkam Umm Al-Qura Calendar</h1>
-          <p>إصدار Vue 2 النظيف والمستقل</p>
+          <p>إصدار جافاسكربت النقي (Pure Vanilla JS — بدون أي إطار عمل)</p>
         </div>
-        <div class="badge-tag">Vue 2 v1.0.0</div>
       </header>
 
       <div class="showcase-grid">
         <!-- 1. Single Hijri -->
         <section class="showcase-card">
-          <div class="card-meta">
-            <h2 class="card-title">1. تقويم أم القرى (مفرد)</h2>
-          </div>
-          <div class="component-wrapper">
-            <aarkam-calendar v-model="singleHijri" calendar="hijri" :dual="false" />
-          </div>
-          <pre class="inspector">{{ pretty(singleHijri) }}</pre>
+          <h2>1. تقويم أم القرى (مفرد)</h2>
+          <div id="cal-single"></div>
+          <pre id="json-single" class="inspector">// اختر يوماً</pre>
         </section>
 
         <!-- 2. Dual Hijri + Gregorian -->
         <section class="showcase-card">
-          <div class="card-meta">
-            <h2 class="card-title">2. التقويم المزدوج (هجري + ميلادي)</h2>
-          </div>
-          <div class="component-wrapper">
-            <aarkam-calendar v-model="dualDate" :dual="true" calendar="hijri" />
-          </div>
-          <pre class="inspector">{{ pretty(dualDate) }}</pre>
+          <h2>2. التقويم المزدوج (هجري + ميلادي)</h2>
+          <div id="cal-dual"></div>
+          <pre id="json-dual" class="inspector">// اختر يوماً</pre>
         </section>
 
         <!-- 3. Form Input Field -->
         <section class="showcase-card">
-          <div class="card-meta">
-            <h2 class="card-title">3. حقل إدخال التاريخ (Input Field)</h2>
-          </div>
-          <div class="component-wrapper">
-            <aarkam-calendar v-model="inputDate" :input-mode="true" label="تاريخ الطلب / الإجراء" />
-          </div>
-          <pre class="inspector">{{ pretty(inputDate) }}</pre>
+          <h2>3. حقل إدخال التاريخ (Input Field)</h2>
+          <div id="cal-input"></div>
+          <pre id="json-input" class="inspector">// اختر يوماً</pre>
         </section>
       </div>
     </div>
@@ -194,22 +179,45 @@
         </div>
       </div>
     </footer>
-   <script>
-      new Vue({
-        el: "#app",
-        data: function () {
-          return {
-            singleHijri: null,
-            dualDate: null,
-            inputDate: null
-          };
+    <script>
+      // 1. Single Hijri Calendar
+      const cal1 = new AarkamCalendar("#cal-single", {
+        calendar: "hijri",
+        dual: false,
+        onChange: function (date) {
+          document.getElementById("json-single").textContent = JSON.stringify(
+            date,
+            null,
+            2,
+          );
         },
-        methods: {
-          pretty: function (val) {
-            if (!val) return "// انقر على أي يوم لتحديث القيمة";
-            return JSON.stringify(val, null, 2);
-          }
-        }
+      });
+
+      // 2. Dual Calendar
+      const cal2 = new AarkamCalendar("#cal-dual", {
+        calendar: "hijri",
+        dual: true,
+        onChange: function (date) {
+          document.getElementById("json-dual").textContent = JSON.stringify(
+            date,
+            null,
+            2,
+          );
+        },
+      });
+
+      // 3. Form Input Box with Popup
+      const cal3 = new AarkamCalendar("#cal-input", {
+        inputMode: true,
+        label: "تاريخ الطلب / الإجراء",
+        calendar: "hijri",
+        onChange: function (date) {
+          document.getElementById("json-input").textContent = JSON.stringify(
+            date,
+            null,
+            2,
+          );
+        },
       });
     </script>
   </body>
