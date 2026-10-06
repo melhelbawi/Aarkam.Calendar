@@ -1,28 +1,27 @@
 /*!
  * =============================================================================
- * Aarkam.Calendar v1.7.2
+ * Aarkam.Calendar (Vue 2 Edition) v1.0.0
  * Author      : Eng. Mohamed Elhelbawi
  * Team        : Aarkam Core Architecture
  * Repository  : https://github.com/melhelbawi/Aarkam.Calendar
  * License     : MIT
  *
- * Umm al-Qura + Gregorian + Dual calendar component.
- * Offline-first, pure JavaScript, zero external dependencies.
- * Full dual support for Vue 2 & Vue 3 via native Options API adapters.
+ * Dedicated Vue 2 Umm al-Qura + Gregorian + Dual Calendar Component.
+ * Offline-first, pure JavaScript, zero bundler/npm dependencies required.
  * =============================================================================
  */
 
 (function (global) {
     "use strict";
 
-    var VERSION = "1.7.2";
+    var VERSION = "1.0.0";
     var AUTHOR = "Eng. Mohamed Elhelbawi";
     var REPOSITORY = "https://github.com/melhelbawi/Aarkam.Calendar";
     var LICENSE = "MIT";
 
-    /* =========================================================================
+    /* =========================================================
        1. CONSTANTS & LOCALIZATION DATA
-       ========================================================================= */
+       ========================================================= */
 
     var MONTHS_AR = [
         "محرم", "صفر", "ربيع الأول", "ربيع الثاني",
@@ -56,9 +55,9 @@
     var PICKER_MONTHS = "months";
     var PICKER_YEARS = "years";
 
-    /* =========================================================================
-       2. CORE CALENDAR ENGINE
-       ========================================================================= */
+    /* =========================================================
+       2. CORE CALENDAR & ASTRONOMICAL ENGINE
+       ========================================================= */
 
     function pad2(value) { return String(value).padStart(2, "0"); }
     function pad4(value) { return String(value).padStart(4, "0"); }
@@ -166,9 +165,9 @@
         return new Date(Date.UTC(year, month, 0)).getUTCDate();
     }
 
-    /* =========================================================================
-       3. DATE AUTHORITY & NATIVE RESOLUTION
-       ========================================================================= */
+    /* =========================================================
+       3. OFFLINE UMM AL-QURA ENGINE & AUTHORITY REGISTRY
+       ========================================================= */
 
     var DateAuthority = {
         overridesGregorian: Object.create(null),
@@ -369,7 +368,7 @@
 
     function formatNumeric(date) {
         if (!date) return "";
-        return pad2(date.day) + " / " + pad2(date.month) + " / " + date.year;
+        return pad4(date.year) + " / " + pad2(date.month) + " / " + pad2(date.day);
     }
 
     function normalizeModelValue(value, calendar) {
@@ -380,28 +379,37 @@
         return normalizeToGregorian(value, calendar);
     }
 
-    /* =========================================================================
-       4. ICONS & STYLES (Locked 7-Column Strict Grid)
-       ========================================================================= */
+    /* =========================================================
+       4. ICONS (Vue 2 domProps SVG Renderer)
+       ========================================================= */
 
     var ICONS = {
-        calendar: '<rect x="3" y="4" width="18" height="18" rx="3" ry="3"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>',
-        moon: '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>',
-        bookDual: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>',
-        chevronLeft: '<polyline points="15 18 9 12 15 6"></polyline>',
-        chevronRight: '<polyline points="9 18 15 12 9 6"></polyline>'
+        calendar: '<svg class="aarkam-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3" ry="3"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>',
+        moon: '<svg class="aarkam-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>',
+        bookDual: '<svg class="aarkam-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>',
+        chevronLeft: '<svg class="aarkam-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>',
+        chevronRight: '<svg class="aarkam-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>'
     };
 
-    function iconSvg(name, cls) {
-        return '<svg class="' + (cls || "aarkam-svg") + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">' + (ICONS[name] || "") + "</svg>";
+    function renderVue2Icon(h, name) {
+        return h("span", {
+            class: "aarkam-icon-wrap",
+            domProps: { innerHTML: ICONS[name] || "" }
+        });
     }
+
+    /* =========================================================
+       5. CSS STYLES
+       ========================================================= */
 
     var CSS = [
         ".aarkam-calendar-root{position:relative;display:block;width:100%;font-family:system-ui,-apple-system,Cairo,sans-serif;direction:rtl;color:#1f2d27;box-sizing:border-box;}",
         ".aarkam-calendar-root *{box-sizing:border-box;margin:0;padding:0;}",
+        ".aarkam-icon-wrap{display:inline-flex;align-items:center;justify-content:center;line-height:0;pointer-events:none;}",
+        ".aarkam-svg{width:16px;height:16px;display:block;pointer-events:none;}",
         ".aarkam-input-group{display:flex;flex-direction:column;gap:6px;width:100%;}",
         ".aarkam-input-label{font-size:13px;font-weight:700;color:#374151;}",
-        ".aarkam-trigger-box{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--aarkam-border,#d1d5db);border-radius:10px;padding:10px 14px;cursor:pointer;transition:.15s ease;font-size:14px;font-weight:700;color:#111827;width:100%;box-shadow:0 1px 2px rgba(0,0,0,0.05);}",
+        ".aarkam-trigger-box{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--aarkam-border,#d1d5db);border-radius:10px;padding:10px 14px;cursor:pointer;transition:.15s ease;font-size:14px;font-weight:700;color:#111827;width:100%;box-shadow:0 1px 2px rgba(0,0,0,0.05);outline:none;}",
         ".aarkam-trigger-box:hover{border-color:var(--aarkam-primary,#156643);box-shadow:0 0 0 3px rgba(21,102,67,0.1);}",
         ".aarkam-trigger-box .aarkam-svg{width:18px;height:18px;color:var(--aarkam-primary,#156643);}",
         ".aarkam-backdrop{position:fixed;inset:0;background:transparent;z-index:9998;}",
@@ -409,7 +417,6 @@
         ".aarkam-type-switcher{display:grid;grid-template-columns:repeat(3,1fr);background:#f3f4f6;border-radius:30px;padding:3px;gap:3px;margin-bottom:10px;width:100%;}",
         ".aarkam-type-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:6px 0;border:0;background:transparent;border-radius:24px;font-size:12px;font-weight:700;color:#6b7280;cursor:pointer;transition:.15s;}",
         ".aarkam-type-btn.active{background:var(--aarkam-primary,#156643);color:#fff;box-shadow:0 2px 4px rgba(21,102,67,.2);}",
-        ".aarkam-type-btn .aarkam-svg{width:14px;height:14px;}",
         ".aarkam-card{background:#fff;border:1px solid var(--aarkam-border,#e5e7eb);border-radius:12px;overflow:hidden;width:100%;max-width:345px;margin:0 auto;box-shadow:0 2px 6px rgba(0,0,0,0.03);}",
         ".aarkam-card-header{background:var(--aarkam-header-bg,var(--aarkam-primary,#156643));color:#fff;padding:12px;display:flex;align-items:center;justify-content:space-between;}",
         ".aarkam-header-nav{background:transparent;border:0;color:#fff;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;cursor:pointer;transition:.15s;opacity:.9;}",
@@ -418,6 +425,7 @@
         ".aarkam-header-titles{display:flex;align-items:center;justify-content:center;flex:1;gap:6px;font-weight:700;}",
         ".aarkam-title-btn{background:transparent;border:0;color:#fff;font-size:15px;font-weight:700;cursor:pointer;padding:4px 8px;border-radius:6px;}",
         ".aarkam-title-btn:hover{background:rgba(255,255,255,.2);}",
+        ".aarkam-title-btn.active{background:rgba(255,255,255,.25);box-shadow:inset 0 0 0 1px rgba(255,255,255,.4);}",
         ".aarkam-dual-header-grid{display:grid;grid-template-columns:1fr 1px 1fr;align-items:center;flex:1;text-align:center;}",
         ".aarkam-dual-col{display:flex;flex-direction:column;align-items:center;line-height:1.2;}",
         ".aarkam-dual-main{font-size:13px;font-weight:800;color:#fff;}",
@@ -429,8 +437,8 @@
         ".aarkam-cell{background:#fff;border:0;aspect-ratio:1;min-height:42px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:.12s ease;border-radius:8px;padding:2px;}",
         ".aarkam-cell:hover:not(.empty){background:#f0fdf4;}",
         ".aarkam-cell.empty{background:transparent;cursor:default;pointer-events:none;}",
-        ".aarkam-cell-primary{font-size:13px;font-weight:700;color:#1f2937;line-height:1.1;}",
-        ".aarkam-cell-secondary{font-size:10px;font-weight:600;color:#9ca3af;line-height:1;margin-top:2px;}",
+        ".aarkam-cell-primary{font-size:13px;font-weight:700;color:#1f2937;line-height:1.1;pointer-events:none;}",
+        ".aarkam-cell-secondary{font-size:10px;font-weight:600;color:#9ca3af;line-height:1;margin-top:2px;pointer-events:none;}",
         ".aarkam-cell.selected{background:var(--aarkam-primary,#156643)!important;}",
         ".aarkam-cell.selected .aarkam-cell-primary{color:#fff!important;}",
         ".aarkam-cell.selected .aarkam-cell-secondary{color:rgba(255,255,255,.85)!important;}",
@@ -439,159 +447,163 @@
         ".aarkam-footer-split{display:flex;align-items:center;justify-content:space-around;width:100%;}",
         ".aarkam-footer-sep{color:#d1d5db;}",
         ".aarkam-picker-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:14px;background:#fff;}",
-        ".aarkam-picker-cell{padding:12px 6px;border:1px solid #e5e7eb;background:#fff;border-radius:8px;font-size:12px;font-weight:700;color:#374151;cursor:pointer;text-align:center;}",
+        ".aarkam-picker-cell{padding:12px 6px;border:1px solid #e5e7eb;background:#fff;border-radius:8px;font-size:13px;font-weight:700;color:#374151;cursor:pointer;text-align:center;}",
         ".aarkam-picker-cell:hover{border-color:var(--aarkam-primary,#156643);background:#f0fdf4;color:var(--aarkam-primary,#156643);}",
         ".aarkam-picker-cell.active{background:var(--aarkam-primary,#156643);color:#fff;border-color:var(--aarkam-primary,#156643);}"
     ].join("");
 
     function injectCss() {
-        if (typeof document === "undefined" || document.getElementById("aarkam-cal-css-v172")) return;
+        if (typeof document === "undefined" || document.getElementById("aarkam-cal-vue2-css")) return;
         var style = document.createElement("style");
-        style.id = "aarkam-cal-css-v172";
+        style.id = "aarkam-cal-vue2-css";
         style.textContent = CSS;
         document.head.appendChild(style);
     }
 
-    /* =========================================================================
-       5. SHARED OPTIONS API COMPONENT DEFINITION GENERATOR
-       ========================================================================= */
+    /* =========================================================
+       6. VUE 2 COMPONENT DEFINITION
+       ========================================================= */
 
-    function getBaseComponentDefinition(isVue3) {
-        return {
-            name: "AarkamCalendar",
-            props: {
-                // Vue 2 uses `value`, Vue 3 uses `modelValue`
-                value: { type: [Object, String], default: null },
-                modelValue: { type: [Object, String], default: null },
-                calendar: { type: String, default: CAL_HIJRI },
-                dual: { type: Boolean, default: false },
-                showSwitcher: { type: Boolean, default: true },
-                inputMode: { type: Boolean, default: false },
-                label: { type: String, default: "التاريخ" },
-                locale: { type: String, default: "ar" },
-                dateAuthority: { type: Object, default: null },
-                primaryColor: { type: String, default: "#156643" },
-                headerBg: { type: String, default: null },
-                bgLight: { type: String, default: "#f7faf8" },
-                borderColor: { type: String, default: "#e2ece7" }
+    var Vue2Component = {
+        name: "AarkamCalendar",
+        model: {
+            prop: "value",
+            event: "input"
+        },
+        props: {
+            value: { type: [Object, String], default: null },
+            calendar: { type: String, default: CAL_HIJRI },
+            dual: { type: Boolean, default: false },
+            showSwitcher: { type: Boolean, default: true },
+            inputMode: { type: Boolean, default: false },
+            label: { type: String, default: "التاريخ" },
+            locale: { type: String, default: "ar" },
+            dateAuthority: { type: Object, default: null },
+            primaryColor: { type: String, default: "#156643" },
+            headerBg: { type: String, default: null },
+            bgLight: { type: String, default: "#f7faf8" },
+            borderColor: { type: String, default: "#e2ece7" }
+        },
+        data: function () {
+            injectCss();
+            if (this.dateAuthority) configureDateAuthority(this.dateAuthority);
+
+            var activeCal = normalizeCalendar(this.calendar);
+            var normalized = normalizeModelValue(this.value, activeCal) || todayGregorian();
+            var proj = projectFromGregorian(normalized, activeCal);
+
+            return {
+                isDual: Boolean(this.dual),
+                activeCalendar: activeCal,
+                pickerMode: PICKER_DAYS,
+                isOpen: !this.inputMode,
+                selectedGregorian: cloneDate(normalized),
+                viewDate: proj,
+                yearRangeStart: Math.floor(proj.year / 10) * 10
+            };
+        },
+        computed: {
+            grid: function () {
+                return monthGrid(this.viewDate.year, this.viewDate.month, this.activeCalendar);
             },
-            data: function () {
-                injectCss();
-                if (this.dateAuthority) configureDateAuthority(this.dateAuthority);
-
-                var activeCal = normalizeCalendar(this.calendar);
-                var rawVal = isVue3
-                    ? (this.modelValue != null ? this.modelValue : this.value)
-                    : (this.value != null ? this.value : this.modelValue);
-
-                var normalized = normalizeModelValue(rawVal, activeCal) || todayGregorian();
-
+            dualSecondaryView: function () {
+                var midGregorian = convert(
+                    { calendar: this.activeCalendar, year: this.viewDate.year, month: this.viewDate.month, day: 15 },
+                    CAL_GREGORIAN
+                );
+                var oppCalendar = this.activeCalendar === CAL_HIJRI ? CAL_GREGORIAN : CAL_HIJRI;
+                return convert(midGregorian, oppCalendar);
+            },
+            themeStyle: function () {
                 return {
-                    isDual: Boolean(this.dual),
-                    activeCalendar: activeCal,
-                    pickerMode: PICKER_DAYS,
-                    isOpen: !this.inputMode,
-                    selectedGregorian: cloneDate(normalized),
-                    viewDate: projectFromGregorian(normalized, activeCal),
-                    yearRangeStart: Math.floor(projectFromGregorian(normalized, activeCal).year / 10) * 10
+                    "--aarkam-primary": this.primaryColor,
+                    "--aarkam-header-bg": this.headerBg || this.primaryColor,
+                    "--aarkam-bg-light": this.bgLight,
+                    "--aarkam-border": this.borderColor
                 };
+            }
+        },
+        watch: {
+            calendar: function (val) {
+                this.switchCalendar(val);
             },
-            computed: {
-                grid: function () {
-                    return monthGrid(this.viewDate.year, this.viewDate.month, this.activeCalendar);
-                },
-                dualSecondaryView: function () {
-                    var midGregorian = convert(
-                        { calendar: this.activeCalendar, year: this.viewDate.year, month: this.viewDate.month, day: 15 },
-                        CAL_GREGORIAN
-                    );
-                    var oppCalendar = this.activeCalendar === CAL_HIJRI ? CAL_GREGORIAN : CAL_HIJRI;
-                    return convert(midGregorian, oppCalendar);
-                },
-                themeStyle: function () {
-                    return {
-                        "--aarkam-primary": this.primaryColor,
-                        "--aarkam-header-bg": this.headerBg || this.primaryColor,
-                        "--aarkam-bg-light": this.bgLight,
-                        "--aarkam-border": this.borderColor
-                    };
+            dual: function (val) {
+                this.isDual = Boolean(val);
+            },
+            value: function (val) {
+                if (val) this.syncFromExternal(val);
+            }
+        },
+        methods: {
+            syncFromExternal: function (val) {
+                var g = normalizeModelValue(val, this.activeCalendar);
+                if (g) {
+                    this.selectedGregorian = cloneDate(g);
+                    this.viewDate = projectFromGregorian(g, this.activeCalendar);
+                    this.yearRangeStart = Math.floor(this.viewDate.year / 10) * 10;
                 }
             },
-            watch: {
-                calendar: function (val) {
-                    this.activeCalendar = normalizeCalendar(val);
-                    this.viewDate = projectFromGregorian(this.selectedGregorian, this.activeCalendar);
-                },
-                dual: function (val) {
-                    this.isDual = Boolean(val);
-                },
-                value: function (val) {
-                    if (!isVue3 && val) this.syncFromExternal(val);
-                },
-                modelValue: function (val) {
-                    if (isVue3 && val) this.syncFromExternal(val);
-                },
-                dateAuthority: {
-                    deep: true,
-                    handler: function (auth) {
-                        if (auth) {
-                            configureDateAuthority(auth);
-                            this.viewDate = projectFromGregorian(this.selectedGregorian, this.activeCalendar);
-                        }
-                    }
+            switchCalendar: function (targetCal) {
+                var next = normalizeCalendar(targetCal);
+                this.activeCalendar = next;
+                this.viewDate = projectFromGregorian(this.selectedGregorian, next);
+                this.yearRangeStart = Math.floor(this.viewDate.year / 10) * 10;
+                this.pickerMode = PICKER_DAYS;
+                this.$emit("calendar-change", next);
+            },
+            toggleYearPicker: function () {
+                if (this.pickerMode === PICKER_YEARS) {
+                    this.pickerMode = PICKER_DAYS;
+                } else {
+                    this.yearRangeStart = Math.floor(this.viewDate.year / 10) * 10;
+                    this.pickerMode = PICKER_YEARS;
                 }
             },
-            methods: {
-                syncFromExternal: function (val) {
-                    var g = normalizeModelValue(val, this.activeCalendar);
-                    if (g) {
-                        this.selectedGregorian = cloneDate(g);
-                        this.viewDate = projectFromGregorian(g, this.activeCalendar);
-                    }
-                },
-                selectDay: function (cell) {
-                    if (!cell) return;
-                    this.selectedGregorian = cloneDate(cell.gregorian);
-                    this.viewDate = projectFromGregorian(cell.gregorian, this.activeCalendar);
+            toggleMonthPicker: function () {
+                this.pickerMode = this.pickerMode === PICKER_MONTHS ? PICKER_DAYS : PICKER_MONTHS;
+            },
+            selectDay: function (cell) {
+                if (!cell) return;
+                this.selectedGregorian = cloneDate(cell.gregorian);
+                this.viewDate = projectFromGregorian(cell.gregorian, this.activeCalendar);
+                this.yearRangeStart = Math.floor(this.viewDate.year / 10) * 10;
 
-                    var emitted = projectFromGregorian(cell.gregorian, this.activeCalendar);
+                var emitted = projectFromGregorian(cell.gregorian, this.activeCalendar);
 
-                    if (isVue3) {
-                        this.$emit("update:modelValue", emitted);
-                    } else {
-                        this.$emit("input", emitted);
-                    }
-                    this.$emit("change", emitted);
+                // Vue 2 standard contract
+                this.$emit("input", emitted);
+                this.$emit("change", emitted);
 
-                    if (this.inputMode) this.isOpen = false;
-                },
-                nav: function (delta) {
-                    if (this.pickerMode === PICKER_YEARS) {
-                        this.yearRangeStart += delta * 10;
-                    } else if (this.pickerMode === PICKER_MONTHS) {
-                        this.viewDate = shiftYear(this.viewDate, delta, this.activeCalendar);
-                    } else {
-                        this.viewDate = shiftMonth(this.viewDate, delta, this.activeCalendar);
-                    }
+                if (this.inputMode) this.isOpen = false;
+            },
+            selectYear: function (yr) {
+                this.viewDate.year = yr;
+                this.yearRangeStart = Math.floor(yr / 10) * 10;
+                this.pickerMode = PICKER_DAYS;
+            },
+            selectMonth: function (monthIdx) {
+                this.viewDate.month = monthIdx;
+                this.pickerMode = PICKER_DAYS;
+            },
+            nav: function (delta) {
+                if (this.pickerMode === PICKER_YEARS) {
+                    this.yearRangeStart += delta * 10;
+                } else if (this.pickerMode === PICKER_MONTHS) {
+                    this.viewDate = shiftYear(this.viewDate, delta, this.activeCalendar);
+                    this.yearRangeStart = Math.floor(this.viewDate.year / 10) * 10;
+                } else {
+                    this.viewDate = shiftMonth(this.viewDate, delta, this.activeCalendar);
+                    this.yearRangeStart = Math.floor(this.viewDate.year / 10) * 10;
                 }
             }
-        };
-    }
-
-    /* =========================================================================
-       6. VUE 2 ADAPTER (Options API)
-       ========================================================================= */
-
-    function createVue2Component() {
-        var base = getBaseComponentDefinition(false);
-
-        base.render = function (h) {
+        },
+        render: function (h) {
             var self = this;
             var isAr = isArabicLocale(this.locale);
             var monthNames = this.activeCalendar === CAL_HIJRI ? (isAr ? MONTHS_AR : MONTHS_EN) : (isAr ? GREG_MONTHS_AR : GREG_MONTHS_EN);
             var secMonthNames = this.activeCalendar === CAL_HIJRI ? (isAr ? GREG_MONTHS_AR : GREG_MONTHS_EN) : (isAr ? MONTHS_AR : MONTHS_EN);
 
-            // Switcher Row
+            // 1. Switcher Row
             var switcher = null;
             if (this.showSwitcher) {
                 switcher = h("div", { class: "aarkam-type-switcher" }, [
@@ -599,35 +611,40 @@
                         class: "aarkam-type-btn" + (!this.isDual && this.activeCalendar === CAL_HIJRI ? " active" : ""),
                         attrs: { type: "button" },
                         on: {
-                            click: function () {
+                            click: function (e) {
+                                e.stopPropagation();
                                 self.isDual = false;
-                                self.activeCalendar = CAL_HIJRI;
-                                self.viewDate = projectFromGregorian(self.selectedGregorian, CAL_HIJRI);
+                                self.switchCalendar(CAL_HIJRI);
                             }
                         }
-                    }, [h("span", { domProps: { innerHTML: iconSvg("moon") } }), isAr ? "هجري" : "Hijri"]),
+                    }, [renderVue2Icon(h, "moon"), isAr ? "هجري" : "Hijri"]),
 
                     h("button", {
                         class: "aarkam-type-btn" + (!this.isDual && this.activeCalendar === CAL_GREGORIAN ? " active" : ""),
                         attrs: { type: "button" },
                         on: {
-                            click: function () {
+                            click: function (e) {
+                                e.stopPropagation();
                                 self.isDual = false;
-                                self.activeCalendar = CAL_GREGORIAN;
-                                self.viewDate = projectFromGregorian(self.selectedGregorian, CAL_GREGORIAN);
+                                self.switchCalendar(CAL_GREGORIAN);
                             }
                         }
-                    }, [h("span", { domProps: { innerHTML: iconSvg("calendar") } }), isAr ? "ميلادي" : "Gregorian"]),
+                    }, [renderVue2Icon(h, "calendar"), isAr ? "ميلادي" : "Gregorian"]),
 
                     h("button", {
                         class: "aarkam-type-btn" + (this.isDual ? " active" : ""),
                         attrs: { type: "button" },
-                        on: { click: function () { self.isDual = true; } }
-                    }, [h("span", { domProps: { innerHTML: iconSvg("bookDual") } }), isAr ? "مزدوج" : "Dual"])
+                        on: {
+                            click: function (e) {
+                                e.stopPropagation();
+                                self.isDual = true;
+                            }
+                        }
+                    }, [renderVue2Icon(h, "bookDual"), isAr ? "مزدوج" : "Dual"])
                 ]);
             }
 
-            // Header Center
+            // 2. Header
             var headerCenter;
             if (this.isDual) {
                 headerCenter = h("div", { class: "aarkam-dual-header-grid" }, [
@@ -644,15 +661,25 @@
             } else {
                 headerCenter = h("div", { class: "aarkam-header-titles" }, [
                     h("button", {
-                        class: "aarkam-title-btn",
+                        class: "aarkam-title-btn" + (this.pickerMode === PICKER_MONTHS ? " active" : ""),
                         attrs: { type: "button" },
-                        on: { click: function () { self.pickerMode = self.pickerMode === PICKER_MONTHS ? PICKER_DAYS : PICKER_MONTHS; } }
+                        on: {
+                            click: function (e) {
+                                e.stopPropagation();
+                                self.toggleMonthPicker();
+                            }
+                        }
                     }, monthNames[this.viewDate.month - 1]),
                     h("button", {
-                        class: "aarkam-title-btn",
+                        class: "aarkam-title-btn" + (this.pickerMode === PICKER_YEARS ? " active" : ""),
                         attrs: { type: "button" },
-                        on: { click: function () { self.pickerMode = self.pickerMode === PICKER_YEARS ? PICKER_DAYS : PICKER_YEARS; } }
-                    }, String(this.viewDate.year))
+                        on: {
+                            click: function (e) {
+                                e.stopPropagation();
+                                self.toggleYearPicker();
+                            }
+                        }
+                    }, this.pickerMode === PICKER_YEARS ? (this.yearRangeStart + " - " + (this.yearRangeStart + 9)) : String(this.viewDate.year))
                 ]);
             }
 
@@ -660,19 +687,27 @@
                 h("button", {
                     class: "aarkam-header-nav",
                     attrs: { type: "button" },
-                    on: { click: function () { self.nav(-1); } },
-                    domProps: { innerHTML: iconSvg("chevronRight") }
-                }),
+                    on: {
+                        click: function (e) {
+                            e.stopPropagation();
+                            self.nav(-1);
+                        }
+                    }
+                }, [renderVue2Icon(h, isAr ? "chevronRight" : "chevronLeft")]),
                 headerCenter,
                 h("button", {
                     class: "aarkam-header-nav",
                     attrs: { type: "button" },
-                    on: { click: function () { self.nav(1); } },
-                    domProps: { innerHTML: iconSvg("chevronLeft") }
-                })
+                    on: {
+                        click: function (e) {
+                            e.stopPropagation();
+                            self.nav(1);
+                        }
+                    }
+                }, [renderVue2Icon(h, isAr ? "chevronLeft" : "chevronRight")])
             ]);
 
-            // Body
+            // 3. Body
             var body;
             if (this.pickerMode === PICKER_DAYS) {
                 var weekdays = (isAr ? WEEK_AR : WEEK_EN).map(function (w) {
@@ -686,7 +721,12 @@
                         class: "aarkam-cell" + (isSel ? " selected" : "") + (isTod ? " today" : ""),
                         attrs: { type: "button" },
                         key: "d-" + c.primary.year + "-" + c.primary.month + "-" + c.primary.day,
-                        on: { click: function () { self.selectDay(c); } }
+                        on: {
+                            click: function (e) {
+                                e.stopPropagation();
+                                self.selectDay(c);
+                            }
+                        }
                     }, [
                         h("span", { class: "aarkam-cell-primary" }, String(c.primary.day)),
                         self.isDual ? h("span", { class: "aarkam-cell-secondary" }, String(c.secondary.day)) : null
@@ -703,9 +743,9 @@
                         attrs: { type: "button" },
                         key: m,
                         on: {
-                            click: function () {
-                                self.viewDate.month = idx + 1;
-                                self.pickerMode = PICKER_DAYS;
+                            click: function (e) {
+                                e.stopPropagation();
+                                self.selectMonth(idx + 1);
                             }
                         }
                     }, m);
@@ -719,16 +759,16 @@
                         attrs: { type: "button" },
                         key: yr,
                         on: {
-                            click: function () {
-                                self.viewDate.year = yr;
-                                self.pickerMode = PICKER_DAYS;
+                            click: function (e) {
+                                e.stopPropagation();
+                                self.selectYear(yr);
                             }
                         }
                     }, String(yr));
                 }));
             }
 
-            // Footer
+            // 4. Footer
             var footer;
             var selH = projectFromGregorian(this.selectedGregorian, CAL_HIJRI);
             var selG = projectFromGregorian(this.selectedGregorian, CAL_GREGORIAN);
@@ -754,215 +794,39 @@
                         h("button", {
                             class: "aarkam-trigger-box",
                             attrs: { type: "button" },
-                            on: { click: function () { self.isOpen = !self.isOpen; } }
+                            on: {
+                                click: function (e) {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    self.isOpen = !self.isOpen;
+                                }
+                            }
                         }, [
                             h("span", inputVal),
-                            h("span", { domProps: { innerHTML: iconSvg("calendar") } })
+                            renderVue2Icon(h, "calendar")
                         ])
                     ]),
-                    this.isOpen ? h("div", { class: "aarkam-backdrop", on: { click: function () { self.isOpen = false; } } }) : null,
+                    this.isOpen ? h("div", {
+                        class: "aarkam-backdrop",
+                        on: {
+                            click: function (e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                self.isOpen = false;
+                            }
+                        }
+                    }) : null,
                     this.isOpen ? h("div", { class: "aarkam-popup-wrap" }, [switcher, card]) : null
                 ]);
             }
 
             return h("div", { class: "aarkam-calendar-root", style: this.themeStyle }, [switcher, card]);
-        };
+        }
+    };
 
-        return base;
-    }
-
-    /* =========================================================================
-       7. VUE 3 ADAPTER (Options API)
-       ========================================================================= */
-
-    function createVue3Component(vue) {
-        var h = vue.h;
-        var base = getBaseComponentDefinition(true);
-
-        base.render = function () {
-            var self = this;
-            var isAr = isArabicLocale(this.locale);
-            var monthNames = this.activeCalendar === CAL_HIJRI ? (isAr ? MONTHS_AR : MONTHS_EN) : (isAr ? GREG_MONTHS_AR : GREG_MONTHS_EN);
-            var secMonthNames = this.activeCalendar === CAL_HIJRI ? (isAr ? GREG_MONTHS_AR : GREG_MONTHS_EN) : (isAr ? MONTHS_AR : MONTHS_EN);
-
-            // Switcher Row
-            var switcher = null;
-            if (this.showSwitcher) {
-                switcher = h("div", { class: "aarkam-type-switcher" }, [
-                    h("button", {
-                        type: "button",
-                        class: "aarkam-type-btn" + (!this.isDual && this.activeCalendar === CAL_HIJRI ? " active" : ""),
-                        onClick: function () {
-                            self.isDual = false;
-                            self.activeCalendar = CAL_HIJRI;
-                            self.viewDate = projectFromGregorian(self.selectedGregorian, CAL_HIJRI);
-                        }
-                    }, [h("span", { innerHTML: iconSvg("moon") }), isAr ? "هجري" : "Hijri"]),
-
-                    h("button", {
-                        type: "button",
-                        class: "aarkam-type-btn" + (!this.isDual && this.activeCalendar === CAL_GREGORIAN ? " active" : ""),
-                        onClick: function () {
-                            self.isDual = false;
-                            self.activeCalendar = CAL_GREGORIAN;
-                            self.viewDate = projectFromGregorian(self.selectedGregorian, CAL_GREGORIAN);
-                        }
-                    }, [h("span", { innerHTML: iconSvg("calendar") }), isAr ? "ميلادي" : "Gregorian"]),
-
-                    h("button", {
-                        type: "button",
-                        class: "aarkam-type-btn" + (this.isDual ? " active" : ""),
-                        onClick: function () { self.isDual = true; }
-                    }, [h("span", { innerHTML: iconSvg("bookDual") }), isAr ? "مزدوج" : "Dual"])
-                ]);
-            }
-
-            // Header Center
-            var headerCenter;
-            if (this.isDual) {
-                headerCenter = h("div", { class: "aarkam-dual-header-grid" }, [
-                    h("div", { class: "aarkam-dual-col" }, [
-                        h("span", { class: "aarkam-dual-main" }, monthNames[this.viewDate.month - 1] + " " + this.viewDate.year),
-                        h("span", { class: "aarkam-dual-sub" }, this.activeCalendar === CAL_HIJRI ? "هجري" : "ميلادي")
-                    ]),
-                    h("div", { class: "aarkam-dual-sep" }),
-                    h("div", { class: "aarkam-dual-col" }, [
-                        h("span", { class: "aarkam-dual-main" }, secMonthNames[this.dualSecondaryView.month - 1] + " " + this.dualSecondaryView.year),
-                        h("span", { class: "aarkam-dual-sub" }, this.activeCalendar === CAL_HIJRI ? "ميلادي" : "هجري")
-                    ])
-                ]);
-            } else {
-                headerCenter = h("div", { class: "aarkam-header-titles" }, [
-                    h("button", {
-                        type: "button",
-                        class: "aarkam-title-btn",
-                        onClick: function () { self.pickerMode = self.pickerMode === PICKER_MONTHS ? PICKER_DAYS : PICKER_MONTHS; }
-                    }, monthNames[this.viewDate.month - 1]),
-                    h("button", {
-                        type: "button",
-                        class: "aarkam-title-btn",
-                        onClick: function () { self.pickerMode = self.pickerMode === PICKER_YEARS ? PICKER_DAYS : PICKER_YEARS; }
-                    }, String(this.viewDate.year))
-                ]);
-            }
-
-            var header = h("div", { class: "aarkam-card-header" }, [
-                h("button", {
-                    type: "button",
-                    class: "aarkam-header-nav",
-                    onClick: function () { self.nav(-1); },
-                    innerHTML: iconSvg("chevronRight")
-                }),
-                headerCenter,
-                h("button", {
-                    type: "button",
-                    class: "aarkam-header-nav",
-                    onClick: function () { self.nav(1); },
-                    innerHTML: iconSvg("chevronLeft")
-                })
-            ]);
-
-            // Body
-            var body;
-            if (this.pickerMode === PICKER_DAYS) {
-                var weekdays = (isAr ? WEEK_AR : WEEK_EN).map(function (w) {
-                    return h("div", { class: "aarkam-col-head", key: w }, w);
-                });
-                var cells = this.grid.map(function (c, i) {
-                    if (!c) return h("div", { class: "aarkam-cell empty", key: "e-" + i });
-                    var isSel = sameDate(c.gregorian, self.selectedGregorian);
-                    var isTod = sameDate(c.gregorian, todayGregorian());
-                    return h("button", {
-                        type: "button",
-                        class: "aarkam-cell" + (isSel ? " selected" : "") + (isTod ? " today" : ""),
-                        key: "d-" + c.primary.year + "-" + c.primary.month + "-" + c.primary.day,
-                        onClick: function () { self.selectDay(c); }
-                    }, [
-                        h("span", { class: "aarkam-cell-primary" }, String(c.primary.day)),
-                        self.isDual ? h("span", { class: "aarkam-cell-secondary" }, String(c.secondary.day)) : null
-                    ]);
-                });
-                body = [
-                    h("div", { class: "aarkam-weekdays-row" }, weekdays),
-                    h("div", { class: "aarkam-days-grid" }, cells)
-                ];
-            } else if (this.pickerMode === PICKER_MONTHS) {
-                body = h("div", { class: "aarkam-picker-grid" }, monthNames.map(function (m, idx) {
-                    return h("button", {
-                        type: "button",
-                        class: "aarkam-picker-cell" + (self.viewDate.month === idx + 1 ? " active" : ""),
-                        key: m,
-                        onClick: function () {
-                            self.viewDate.month = idx + 1;
-                            self.pickerMode = PICKER_DAYS;
-                        }
-                    }, m);
-                }));
-            } else {
-                var years = [];
-                for (var y = 0; y < 10; y++) years.push(this.yearRangeStart + y);
-                body = h("div", { class: "aarkam-picker-grid" }, years.map(function (yr) {
-                    return h("button", {
-                        type: "button",
-                        class: "aarkam-picker-cell" + (self.viewDate.year === yr ? " active" : ""),
-                        key: yr,
-                        onClick: function () {
-                            self.viewDate.year = yr;
-                            self.pickerMode = PICKER_DAYS;
-                        }
-                    }, String(yr));
-                }));
-            }
-
-            // Footer
-            var footer;
-            var selH = projectFromGregorian(this.selectedGregorian, CAL_HIJRI);
-            var selG = projectFromGregorian(this.selectedGregorian, CAL_GREGORIAN);
-            if (this.isDual) {
-                footer = h("div", { class: "aarkam-card-footer" }, [
-                    h("div", { class: "aarkam-footer-split" }, [
-                        h("span", formatDate(selH, this.locale)),
-                        h("span", { class: "aarkam-footer-sep" }, "|"),
-                        h("span", formatDate(selG, this.locale))
-                    ])
-                ]);
-            } else {
-                footer = h("div", { class: "aarkam-card-footer" }, formatDate(this.activeCalendar === CAL_HIJRI ? selH : selG, this.locale));
-            }
-
-            var card = h("div", { class: "aarkam-card" }, [header, body, footer]);
-
-            if (this.inputMode) {
-                var inputVal = formatNumeric(this.activeCalendar === CAL_HIJRI ? selH : selG);
-                return h("div", { class: "aarkam-calendar-root", style: this.themeStyle }, [
-                    h("div", { class: "aarkam-input-group" }, [
-                        this.label ? h("label", { class: "aarkam-input-label" }, this.label) : null,
-                        h("button", {
-                            type: "button",
-                            class: "aarkam-trigger-box",
-                            onClick: function () { self.isOpen = !self.isOpen; }
-                        }, [
-                            h("span", inputVal),
-                            h("span", { innerHTML: iconSvg("calendar") })
-                        ])
-                    ]),
-                    this.isOpen ? h("div", { class: "aarkam-backdrop", onClick: function () { self.isOpen = false; } }) : null,
-                    this.isOpen ? h("div", { class: "aarkam-popup-wrap" }, [switcher, card]) : null
-                ]);
-            }
-
-            return h("div", { class: "aarkam-calendar-root", style: this.themeStyle }, [switcher, card]);
-        };
-
-        return base;
-    }
-
-    /* =========================================================================
-       8. UNIVERSAL INSTALLER & EXPORTS
-       ========================================================================= */
-
-    var Vue2Component = createVue2Component();
-    var Vue3Component = global.Vue && global.Vue.h ? createVue3Component(global.Vue) : null;
+    /* =========================================================
+       7. VUE 2 INSTALLER & EXPORT
+       ========================================================= */
 
     var AarkamCalendar = {
         version: VERSION,
@@ -970,36 +834,15 @@
         repository: REPOSITORY,
         license: LICENSE,
         configureDateAuthority: configureDateAuthority,
+        Component: Vue2Component,
 
-        Vue2Component: Vue2Component,
-        Vue3Component: Vue3Component,
-
-        install: function (target, options) {
-            // Vue 3 detection: `target.config && target.component` (App instance)
-            if (target && typeof target.component === "function" && target.config) {
-                var vueRuntime = (options && options.vue) || global.Vue;
-                if (!vueRuntime || !vueRuntime.h) {
-                    throw new Error("[AarkamCalendar] Vue 3 runtime with `h` is required for Vue 3 installation.");
-                }
-                var v3Comp = createVue3Component(vueRuntime);
-                target.component("AarkamCalendar", v3Comp);
-                target.component("aarkam-calendar", v3Comp);
-                return;
-            }
-
-            // Vue 2 detection: `target.use && target.component` (Global Vue constructor)
-            if (target && typeof target.component === "function") {
-                target.component("AarkamCalendar", Vue2Component);
-                target.component("aarkam-calendar", Vue2Component);
-                return;
-            }
-
-            throw new Error("[AarkamCalendar] Unknown Vue instance passed to install().");
+        install: function (Vue) {
+            Vue.component("AarkamCalendar", Vue2Component);
+            Vue.component("aarkam-calendar", Vue2Component);
         }
     };
 
-    // Auto-register if Vue 2 global constructor exists
-    if (global.Vue && global.Vue.version && global.Vue.version.charAt(0) === "2") {
+    if (global.Vue) {
         global.Vue.use(AarkamCalendar);
     }
 

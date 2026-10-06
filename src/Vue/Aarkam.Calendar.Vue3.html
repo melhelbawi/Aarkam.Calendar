@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aarkam Calendar v1.7.5 — Official Showcase Playground</title>
+
+    <!-- Google Fonts for crisp Arabic typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Vue 3 Runtime -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+    <!-- Updated Aarkam Calendar Script (v1.7.5) -->
+    <script src="Aarkam.Calendar.vue3.v1.0.0.min.js"></script>
+    <link rel="stylesheet" href="Aarkam.Calendar.css" />
+  </head>
+
+  <body>
+    <div id="app" class="container">
+      <!-- Page Header -->
+      <header class="page-header">
+        <div class="page-title">
+          <h1>تقويم أرقام — Aarkam Umm Al-Qura Calendar</h1>
+          <p>
+            عرض تفاعلي يدعم التقويم الهجري (أم القرى) والميلادي والتقويم المزدوج
+            بدقة تامة وبدون اتصال
+          </p>
+        </div>
+        <div class="badge-tag">الإصدار 1.7.4 (Vue 3 Options API)</div>
+      </header>
+
+      <!-- 3-Column Showcase Grid -->
+      <div class="showcase-grid">
+        <!-- Column 1: Single Umm Al-Qura Calendar -->
+        <section class="showcase-card">
+          <div class="card-meta">
+            <span class="card-num">النمط 01</span>
+            <h2 class="card-title">1. تقويم أم القرى (مفرد)</h2>
+            <p class="card-desc">عرض التقويم الهجري المعتمد</p>
+          </div>
+
+          <div class="component-wrapper">
+            <aarkam-calendar
+              v-model="singleHijri"
+              calendar="hijri"
+              :dual="false"
+              :show-switcher="true"
+              @change="logEvent('Hijri', $event)"
+            />
+          </div>
+
+          <div>
+            <div class="inspector-label">القيمة المختارة (Model Value):</div>
+            <pre class="inspector">{{ pretty(singleHijri) }}</pre>
+          </div>
+        </section>
+
+        <!-- Column 2: Dual Calendar (Hijri + Gregorian) -->
+        <section class="showcase-card">
+          <div class="card-meta">
+            <span class="card-num">النمط 02</span>
+            <h2 class="card-title">2. التقويم المزدوج (هجري + ميلادي)</h2>
+            <p class="card-desc">
+              شاشتان متزامنتان في رأس التقويم وأرقام أيام مدمجة
+            </p>
+          </div>
+
+          <div class="component-wrapper">
+            <aarkam-calendar
+              v-model="dualDate"
+              :dual="true"
+              calendar="hijri"
+              :show-switcher="true"
+              :input-mode="true"
+              @change="logEvent('Dual', $event)"
+            />
+          </div>
+
+          <div>
+            <div class="inspector-label">القيمة المختارة (Model Value):</div>
+            <pre class="inspector">{{ pretty(dualDate) }}</pre>
+          </div>
+        </section>
+
+        <!-- Column 3: Form Input Field with Popup -->
+        <section class="showcase-card">
+          <div class="card-meta">
+            <span class="card-num">النمط 03</span>
+            <h2 class="card-title">3. حقل إدخال التاريخ (Input Field)</h2>
+            <p class="card-desc">
+              قائمة منبثقة تفاعلية مناسبة للنماذج واستمارات الإدخال
+            </p>
+          </div>
+
+          <div class="component-wrapper" style="width: 100%">
+            <aarkam-calendar
+              v-model="inputDate"
+              :input-mode="true"
+              :dual="false"
+              calendar="hijri"
+              label="تاريخ الطلب / الإجراء"
+              @change="logEvent('Input', $event)"
+            />
+          </div>
+
+          <div>
+            <div class="inspector-label">القيمة المختارة (Model Value):</div>
+            <pre class="inspector">{{ pretty(inputDate) }}</pre>
+          </div>
+        </section>
+      </div>
+    </div>
+    <!-- =========================================================
+     Aarkam Calendar — Developer / Project Footer
+     ========================================================= -->
+    <footer class="aarkam-footer">
+      <div class="aarkam-footer-pattern"></div>
+
+      <div class="aarkam-footer-inner">
+        <!-- Brand -->
+        <div class="aarkam-footer-brand">
+          <div class="aarkam-brand-mark">
+            <span class="brand-mark-symbol">IO</span>
+          </div>
+
+          <div>
+            <div class="aarkam-brand-name">Aarkam</div>
+          </div>
+        </div>
+
+        <!-- Main message -->
+        <div class="aarkam-footer-message">
+          <div class="aarkam-footer-kicker">
+            <span class="kicker-line"></span>
+            <span>تقنية سعودية • Saudi Technology</span>
+            <span class="kicker-line"></span>
+          </div>
+
+          <h3>Aarkam Calendar</h3>
+
+          <p>
+            تقويم هجري أم القرى وميلادي حديث، مصمم للتطبيقات المؤسسية والحكومية
+            والعمل دون اتصال.
+          </p>
+
+          <p class="aarkam-footer-developed">
+            Developed by
+            <strong>Mohamed Elhelbawi</strong>
+          </p>
+        </div>
+
+        <!-- Links -->
+        <div class="aarkam-footer-links">
+          <a
+            href="https://www.linkedin.com/in/dr-melhelbawi/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="aarkam-social linkedin"
+            aria-label="Mohamed Elhelbawi on LinkedIn"
+          >
+            <span class="social-icon">
+              <i class="fa-brands fa-linkedin-in"></i>
+            </span>
+
+            <span class="social-content">
+              <small>LinkedIn</small>
+              <strong>Mohamed Elhelbawi</strong>
+            </span>
+
+            <i class="fa-solid fa-arrow-up-right-from-square social-arrow"></i>
+          </a>
+
+          <a
+            href="https://github.com/melhelbawi/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="aarkam-social github"
+            aria-label="Mohamed Elhelbawi on GitHub"
+          >
+            <span class="social-icon">
+              <i class="fa-brands fa-github"></i>
+            </span>
+
+            <span class="social-content">
+              <small>Open Source</small>
+              <strong>GitHub / melhelbawi</strong>
+            </span>
+
+            <i class="fa-solid fa-arrow-up-right-from-square social-arrow"></i>
+          </a>
+
+          <a
+            href="https://aarkam.io/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="aarkam-social aarkam"
+            aria-label="Aarkam official website"
+          >
+            <span class="social-icon aarkam-icon">
+              <span>أ</span>
+            </span>
+
+            <span class="social-content">
+              <small>Founder</small>
+              <strong>Aarkam.io</strong>
+            </span>
+
+            <i class="fa-solid fa-arrow-up-right-from-square social-arrow"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Bottom bar -->
+      <div class="aarkam-footer-bottom">
+        <div class="aarkam-footer-bottom-inner">
+          <div class="aarkam-copyright">
+            © 2026
+            <strong>Aarkam</strong>
+            · Developed by
+            <strong>Mohamed Elhelbawi</strong>
+          </div>
+
+          <div class="aarkam-footer-status">
+            <span class="status-dot"></span>
+
+            <span> Offline First </span>
+
+            <span class="footer-separator">•</span>
+
+            <span> Umm Al-Qura </span>
+
+            <span class="footer-separator">•</span>
+
+            <span> v1.7.3 </span>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- Application Script -->
+    <script>
+      const { createApp, ref } = Vue;
+
+      const app = createApp({
+        setup() {
+          // Preset initial states
+          const singleHijri = ref(null);
+          const dualDate = ref(null);
+          const inputDate = ref(null);
+
+          function pretty(val) {
+            if (!val) return "// انقر على أي يوم لتحديث القيمة";
+            return JSON.stringify(val, null, 2);
+          }
+
+          function logEvent(name, val) {
+            console.log(`[AarkamCalendar][${name}] Selected:`, val);
+          }
+
+          return {
+            singleHijri,
+            dualDate,
+            inputDate,
+            pretty,
+            logEvent,
+          };
+        },
+      });
+
+      // Register calendar plugin
+      app.use(AarkamCalendar).mount("#app");
+    </script>
+  </body>
+</html>

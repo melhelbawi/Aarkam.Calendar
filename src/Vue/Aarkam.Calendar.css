@@ -1,0 +1,722 @@
+/* =========================================================
+   Aarkam Calendar — Official Showcase Footer
+   Saudi Green / Enterprise Style
+   ========================================================= */
+
+    :root {
+        --bg-page: #f2f7f4;
+        --card-bg: #ffffff;
+        --primary: #156643;
+        --border-color: #dce7e1;
+        --text-color: #172a21;
+        --text-muted: #667c72;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 32px 24px;
+        background: var(--bg-page);
+        color: var(--text-color);
+        font-family:
+          "Cairo",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        line-height: 1.5;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      /* Header */
+      .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 28px;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 18px;
+      }
+
+      .page-title h1 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--primary);
+      }
+
+      .page-title p {
+        margin: 4px 0 0;
+        font-size: 13px;
+        color: var(--text-muted);
+      }
+
+      .badge-tag {
+        background: #e2f2ea;
+        color: var(--primary);
+        font-size: 12px;
+        font-weight: 700;
+        padding: 6px 14px;
+        border-radius: 20px;
+        border: 1px solid #c2e2d2;
+      }
+
+      /* Showcase Grid */
+      .showcase-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 24px;
+        align-items: start;
+      }
+
+      .showcase-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 4px 18px rgba(17, 45, 34, 0.04);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .card-meta {
+        border-bottom: 1px dashed var(--border-color);
+        padding-bottom: 12px;
+      }
+
+      .card-num {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--primary);
+      }
+
+      .card-title {
+        margin: 2px 0 0;
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .card-desc {
+        margin: 2px 0 0;
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .component-wrapper {
+        display: flex;
+        justify-content: center;
+        padding: 6px 0;
+      }
+
+      /* JSON Inspector */
+      .inspector {
+        background: #192720;
+        border-radius: 10px;
+        padding: 10px 14px;
+        font-family: Consolas, monospace;
+        font-size: 11px;
+        direction: ltr;
+        text-align: left;
+        color: #8ce4b9;
+        overflow-x: auto;
+        max-height: 120px;
+      }
+
+      .inspector-label {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text-muted);
+        margin-bottom: 4px;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          padding: 16px;
+        }
+        .showcase-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+.aarkam-footer {
+  position: relative;
+  margin-top: 56px;
+  overflow: hidden;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0b4f32 0%,
+      #0f6c3d 45%,
+      #0b5935 100%
+    );
+
+  border-radius: 22px 22px 0 0;
+
+  box-shadow:
+    0 -8px 30px rgba(15, 108, 61, 0.10);
+}
+
+
+/* ---------------------------------------------------------
+   Decorative background
+   --------------------------------------------------------- */
+
+.aarkam-footer-pattern {
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: 0.10;
+
+  background-image:
+    linear-gradient(
+      135deg,
+      transparent 24%,
+      rgba(255,255,255,.35) 25%,
+      transparent 26%
+    ),
+    linear-gradient(
+      45deg,
+      transparent 24%,
+      rgba(255,255,255,.20) 25%,
+      transparent 26%
+    );
+
+  background-size: 54px 54px;
+}
+
+
+/* subtle top Saudi-green accent */
+
+.aarkam-footer::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 4px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #d8f2e3 20%,
+      #ffffff 50%,
+      #d8f2e3 80%,
+      transparent
+    );
+
+  opacity: .75;
+}
+
+
+/* ---------------------------------------------------------
+   Main footer
+   --------------------------------------------------------- */
+
+.aarkam-footer-inner {
+
+  position: relative;
+  z-index: 1;
+
+  max-width: 1200px;
+
+  margin: 0 auto;
+
+  padding: 38px 30px;
+
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1.5fr
+    1.25fr;
+
+  gap: 38px;
+
+  align-items: center;
+}
+
+
+/* ---------------------------------------------------------
+   Brand
+   --------------------------------------------------------- */
+
+.aarkam-footer-brand {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+}
+
+
+.aarkam-brand-mark {
+
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.20),
+      rgba(255,255,255,.06)
+    );
+
+  border:
+    1px solid rgba(255,255,255,.24);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.20),
+    0 8px 24px rgba(0,0,0,.10);
+}
+
+
+.brand-mark-symbol {
+
+  font-size: 29px;
+
+  font-weight: 800;
+
+  color: #ffffff;
+
+  line-height: 1;
+}
+
+
+.aarkam-brand-name {
+
+  font-size: 25px;
+
+  font-weight: 800;
+
+  letter-spacing: .3px;
+}
+
+
+.aarkam-brand-subtitle {
+
+  margin-top: 2px;
+
+  font-size: 11px;
+
+  color: rgba(255,255,255,.72);
+
+  font-weight: 600;
+}
+
+
+/* ---------------------------------------------------------
+   Center message
+   --------------------------------------------------------- */
+
+.aarkam-footer-message {
+
+  text-align: center;
+}
+
+
+.aarkam-footer-kicker {
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  font-size: 10px;
+
+  color: rgba(255,255,255,.70);
+
+  font-weight: 700;
+
+  letter-spacing: .4px;
+}
+
+
+.kicker-line {
+
+  width: 28px;
+
+  height: 1px;
+
+  background:
+    rgba(255,255,255,.35);
+}
+
+
+.aarkam-footer-message h3 {
+
+  margin: 8px 0 3px;
+
+  font-size: 19px;
+
+  font-weight: 800;
+
+  letter-spacing: .2px;
+}
+
+
+.aarkam-footer-message > p {
+
+  max-width: 470px;
+
+  margin: 0 auto;
+
+  color:
+    rgba(255,255,255,.75);
+
+  font-size: 11px;
+
+  line-height: 1.8;
+}
+
+
+.aarkam-footer-developed {
+
+  margin-top: 10px !important;
+
+  color:
+    rgba(255,255,255,.90) !important;
+}
+
+
+.aarkam-footer-developed strong {
+
+  color: #ffffff;
+
+  font-weight: 800;
+}
+
+
+/* ---------------------------------------------------------
+   Social / project links
+   --------------------------------------------------------- */
+
+.aarkam-footer-links {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 9px;
+}
+
+
+.aarkam-social {
+
+  display: flex;
+
+  align-items: center;
+
+  min-height: 50px;
+
+  padding: 7px 10px;
+
+  gap: 11px;
+
+  color: #ffffff;
+
+  text-decoration: none;
+
+  border-radius: 12px;
+
+  border:
+    1px solid rgba(255,255,255,.12);
+
+  background:
+    rgba(255,255,255,.07);
+
+  transition:
+    transform .18s ease,
+    background .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease;
+}
+
+
+.aarkam-social:hover {
+
+  color: #ffffff;
+
+  text-decoration: none;
+
+  transform:
+    translateY(-2px);
+
+  background:
+    rgba(255,255,255,.13);
+
+  border-color:
+    rgba(255,255,255,.24);
+
+  box-shadow:
+    0 8px 22px rgba(0,0,0,.10);
+}
+
+
+.social-icon {
+
+  width: 34px;
+  height: 34px;
+
+  flex: 0 0 34px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background:
+    rgba(255,255,255,.12);
+
+  font-size: 16px;
+}
+
+
+.aarkam-icon {
+
+  font-size: 17px;
+
+  font-weight: 800;
+}
+
+
+.social-content {
+
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  flex: 1;
+}
+
+
+.social-content small {
+
+  font-size: 9px;
+
+  line-height: 1.2;
+
+  color:
+    rgba(255,255,255,.55);
+
+  font-weight: 600;
+}
+
+
+.social-content strong {
+
+  margin-top: 2px;
+
+  font-size: 11px;
+
+  line-height: 1.2;
+
+  color: #ffffff;
+
+  font-weight: 700;
+
+  direction: ltr;
+
+  text-align: right;
+}
+
+
+.social-arrow {
+
+  font-size: 10px;
+
+  color:
+    rgba(255,255,255,.45);
+}
+
+
+/* ---------------------------------------------------------
+   Bottom bar
+   --------------------------------------------------------- */
+
+.aarkam-footer-bottom {
+
+  position: relative;
+
+  z-index: 1;
+
+  border-top:
+    1px solid rgba(255,255,255,.12);
+
+  background:
+    rgba(0,0,0,.10);
+}
+
+
+.aarkam-footer-bottom-inner {
+
+  max-width: 1200px;
+
+  margin: 0 auto;
+
+  padding: 14px 30px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+
+.aarkam-copyright {
+
+  font-size: 10px;
+
+  color:
+    rgba(255,255,255,.62);
+}
+
+
+.aarkam-copyright strong {
+
+  color:
+    rgba(255,255,255,.90);
+
+  font-weight: 700;
+}
+
+
+.aarkam-footer-status {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  font-size: 9px;
+
+  color:
+    rgba(255,255,255,.62);
+
+  font-weight: 600;
+}
+
+
+.status-dot {
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #a8e6c1;
+
+  box-shadow:
+    0 0 0 3px rgba(168,230,193,.10);
+}
+
+
+.footer-separator {
+
+  opacity: .35;
+}
+
+
+/* ---------------------------------------------------------
+   Responsive
+   --------------------------------------------------------- */
+
+@media (max-width: 900px) {
+
+  .aarkam-footer-inner {
+
+    grid-template-columns: 1fr;
+
+    text-align: center;
+
+    gap: 28px;
+  }
+
+
+  .aarkam-footer-brand {
+
+    justify-content: center;
+  }
+
+
+  .aarkam-footer-links {
+
+    max-width: 420px;
+
+    width: 100%;
+
+    margin: 0 auto;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .aarkam-footer {
+
+    margin-top: 36px;
+
+    border-radius: 16px 16px 0 0;
+  }
+
+
+  .aarkam-footer-inner {
+
+    padding: 30px 18px;
+  }
+
+
+  .aarkam-footer-bottom-inner {
+
+    padding: 14px 18px;
+
+    flex-direction: column;
+
+    text-align: center;
+
+    gap: 8px;
+  }
+
+
+  .aarkam-footer-status {
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+  }
+
+}
